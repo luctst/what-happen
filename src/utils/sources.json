@@ -1,0 +1,10 @@
+{
+    "country": [
+        {"value": "us", "content": "United-States"},
+        {"value": "fr", "content": "France"},
+        {"value": "gb", "content": "England"},
+        {"value": "ae", "content": "Arabic"},
+        {"value": "ar", "content": "Ar"},
+        {"value": "at", "content": "At"}
+    ]
+}
