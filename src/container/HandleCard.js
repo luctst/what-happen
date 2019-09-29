@@ -7,58 +7,70 @@ function HandleCard () {
         loading: false,
         apiUrl: "https://newsapi.org/v2/",
         filters: {
-            country: "us"
+            country: "us",
+            category: "business"
         },
         country: [...countryData.country],
+        category: [...countryData.category],
         data: []
     });
 
     const handleChange = element => {
-        if (state.filters.country === element.target.value) {
-            return alert("Articles already fetch from "+ state.filters.country.toUpperCase());
-        }
-
         const newState = {...state};
-        newState.filters.country = element.target.value;
 
-        fetch(`${state.apiUrl}top-headlines?country=${element.target.value}&apikey=${process.env.REACT_APP_APIKEY}`)
-        .then(data => data.json())
-        .then(dataParsed => {
-            newState.data = [...dataParsed.articles];
-
-            setState(newState);
+        Object.keys(state.filters).map(parameter => {
+            if (element.target.id === parameter) {
+                newState.filters[parameter] = element.target.value;
+            }
         });
+
+        setState(newState);
     };
 
     useEffect(() => {
-        fetch(`${state.apiUrl}top-headlines?country=us&apikey=${process.env.REACT_APP_APIKEY}`)
+        fetch(`${state.apiUrl}top-headlines?country=${state.filters.country}&category=${state.filters.category}&apikey=${process.env.REACT_APP_APIKEY}`)
         .then(data => data.json())
         .then(dataParsed => {
             const newState = {...state};
 
-            newState.loading = !newState.loading;
+            newState.loading = true;
             newState.data = [...dataParsed.articles];
 
             setState(newState);
         })
         .catch(err => err.message)
-    }, []);
+    }, [state.filters.country, state.filters.category]);
 
     return (
         <>
             <section className="container filter mt-5">
                 <div className="row">
-                    <div className="input-group mb-3 col-2">
+                    <div className="input-group mb-3 col-4">
                         <div className="input-group-prepend">
                             <label className="input-group-text" htmlFor="inputGroupSelect01">Country</label>
                         </div>
-                        <select className="custom-select" id="inputGroupSelect01" onChange={e => handleChange(e)}>
+                        <select className="custom-select" id="country" onChange={e => handleChange(e)}>
                             {
                                 state.country.map(item => {
                                     return <option 
                                                 value={item.value} 
                                                 key={item.value}>{item.content}
                                             </option>
+                                })
+                            }
+                        </select>
+                    </div>
+                    <div className="input-group mb-3 col-4">
+                        <div className="input-group-prepend">
+                            <label className="input-group-text" htmlFor="inputGroupSelect01">Category</label>
+                        </div>
+                        <select className="custom-select" id="category" onChange={e => handleChange(e)}>
+                            {
+                                state.category.map((item, i) => {
+                                    return <option
+                                        value={item}
+                                        key={i}>{item}
+                                    </option>
                                 })
                             }
                         </select>
