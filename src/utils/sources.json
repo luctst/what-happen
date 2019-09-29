@@ -3,8 +3,22 @@
         {"value": "us", "content": "United-States"},
         {"value": "fr", "content": "France"},
         {"value": "gb", "content": "England"},
-        {"value": "ae", "content": "Arabic"},
-        {"value": "ar", "content": "Ar"},
-        {"value": "at", "content": "At"}
+        {"value": "ae", "content": "Arab Emirates"},
+        {"value": "ar", "content": "Argentina"},
+        {"value": "at", "content": "Austria"},
+        {"value": "jp", "content": "Japan"},
+        {"value": "kr", "content": "Koréa"},
+        {"value": "lv", "content": "Latvia"},
+        {"value": "mx", "content": "Mexico"},
+        {"value": "de", "content": "Germany"}
+    ],
+    "category": [
+        "business",
+        "entertainment",
+        "general",
+        "health",
+        "science",
+        "sports",
+        "technology"
     ]
 }
