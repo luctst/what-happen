@@ -8,7 +8,7 @@ function HandleCard () {
         apiUrl: "https://newsapi.org/v2/",
         filters: {
             country: "us",
-            category: "business"
+            category: "business",
         },
         country: [...countryData.country],
         category: [...countryData.category],
@@ -18,11 +18,7 @@ function HandleCard () {
     const handleChange = element => {
         const newState = {...state};
 
-        Object.keys(state.filters).map(parameter => {
-            if (element.target.id === parameter) {
-                newState.filters[parameter] = element.target.value;
-            }
-        });
+        newState.filters[element.target.id] = element.target.value;
 
         setState(newState);
     };
@@ -45,36 +41,33 @@ function HandleCard () {
         <>
             <section className="container filter mt-5">
                 <div className="row">
-                    <div className="input-group mb-3 col-4">
-                        <div className="input-group-prepend">
-                            <label className="input-group-text" htmlFor="inputGroupSelect01">Country</label>
-                        </div>
-                        <select className="custom-select" id="country" onChange={e => handleChange(e)}>
-                            {
-                                state.country.map(item => {
-                                    return <option 
-                                                value={item.value} 
-                                                key={item.value}>{item.content}
-                                            </option>
-                                })
-                            }
-                        </select>
-                    </div>
-                    <div className="input-group mb-3 col-4">
-                        <div className="input-group-prepend">
-                            <label className="input-group-text" htmlFor="inputGroupSelect01">Category</label>
-                        </div>
-                        <select className="custom-select" id="category" onChange={e => handleChange(e)}>
-                            {
-                                state.category.map((item, i) => {
-                                    return <option
-                                        value={item}
-                                        key={i}>{item}
-                                    </option>
-                                })
-                            }
-                        </select>
-                    </div>
+                    {
+                        Object.keys(state.filters).map(filter => {
+                            return (
+                                <>
+                                    <div className="input-group mb-3 col-4">
+                                        <div className="input-group-prepend">
+                                            <label className="input-group-text" htmlFor="inputGroupSelect01">{filter}</label>
+                                        </div>
+                                        <select className="custom-select" id={filter} onChange={e => handleChange(e)}>
+                                            {
+                                                state[filter].map(item => {
+                                                    if (typeof item === "object") {    
+                                                        return <option
+                                                            value={item.value}
+                                                            key={item.value}>{item.content}
+                                                        </option>
+                                                    }
+
+                                                    return <option value={item} key={item}>{item}</option>
+                                                })
+                                            }
+                                        </select>
+                                    </div>
+                                </>
+                            );
+                        })
+                    }
                 </div>
             </section>
             <section className="container handle--card mt-5">
