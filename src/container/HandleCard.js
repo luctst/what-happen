@@ -7,24 +7,32 @@ function HandleCard () {
         loading: false,
         apiUrl: "https://newsapi.org/v2/",
         filters: {
-            country: "us",
-            category: "business",
+            country: {
+                value: "us",
+                data: [...countryData.country]
+            },
+            category: {
+                value: "business",
+                data: [...countryData.category]
+            },
         },
-        country: [...countryData.country],
-        category: [...countryData.category],
         data: []
     });
 
     const handleChange = element => {
         const newState = {...state};
 
-        newState.filters[element.target.id] = element.target.value;
+        newState.filters[element.target.id].value = element.target.value;
 
         setState(newState);
     };
 
     useEffect(() => {
-        fetch(`${state.apiUrl}top-headlines?country=${state.filters.country}&category=${state.filters.category}&apikey=${process.env.REACT_APP_APIKEY}`)
+        const urlToFetch = new URL(`${state.apiUrl}top-headlines?apikey=${process.env.REACT_APP_APIKEY}`);
+
+        Object.keys(state.filters).map(filter => urlToFetch.searchParams.append(filter, state.filters[filter].value));
+
+        fetch(urlToFetch.toString())
         .then(data => data.json())
         .then(dataParsed => {
             const newState = {...state};
@@ -35,7 +43,10 @@ function HandleCard () {
             setState(newState);
         })
         .catch(err => err.message)
-    }, [state.filters.country, state.filters.category]);
+    }, [
+        state.filters.country.value, 
+        state.filters.category.value
+    ]);
 
     return (
         <>
@@ -51,7 +62,7 @@ function HandleCard () {
                                         </div>
                                         <select className="custom-select" id={filter} onChange={e => handleChange(e)}>
                                             {
-                                                state[filter].map(item => {
+                                                state.filters[filter].data.map(item => {
                                                     if (typeof item === "object") {    
                                                         return <option
                                                             value={item.value}
