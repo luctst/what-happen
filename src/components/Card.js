@@ -35,7 +35,7 @@ function Card(data) {
                    rel="noopener noreferrer"
                    style={{textDecoration: "none", display: "flex", alignItems: "center"}}>
                     <div className="img">
-                        <img src={data.data.urlToImage} style={styleImg}/>
+                        <img src={data.data.urlToImage} style={styleImg} alt="This is something that you should see"/>
                     </div>
                     <div className="author">
                         <h5 style={{ marginBottom: "2px", fontWeight: 600, color: "#6c7583", fontSize: "10px"}}>{data.data.author}</h5>
